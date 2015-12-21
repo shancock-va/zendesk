@@ -9,6 +9,10 @@ mapping_table = {
         'path': '/tickets.json',
         'method': 'GET',
     },
+    'ticket_metrics': {
+        'path': '/ticket_metrics.json',
+        'method': 'GET',
+    },
     'show_ticket': {
         'path': '/tickets/{{ticket_id}}.json',
         'method': 'GET',

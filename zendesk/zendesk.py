@@ -84,7 +84,7 @@ class Zendesk(object):
 
     def __init__(self, zendesk_url, zendesk_username=None,
                  zendesk_password=None, use_api_token=False, headers=None,
-                 client_args={}, api_version=1):
+                 client_args={}, api_version=2):
         """
         Instantiates an instance of Zendesk. Takes optional parameters for
         HTTP Basic Authentication
