@@ -247,20 +247,20 @@ class Zendesk(object):
         else:
             return responses[response_status]
 
-    def next_page(self, api_call, response):
+    def next_page(self, api_call, next_page_url):
         """
-
+        Get next page
         :param response:
         :return:
         """
         api_map = self.mapping_table[api_call]
 
-        if 'next_page' in response and response['next_page'] is None:
+        if next_page_url is None:
             raise ZendeskNoPageError("There aren't any more pages")
 
         # Make an http request (data replacements are finalized)
         new_response, content = self.client.request(
-            response['next_page'],
+            next_page_url,
             api_map['method'],
             headers=self.headers
         )
