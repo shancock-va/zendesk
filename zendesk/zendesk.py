@@ -54,6 +54,11 @@ class ZendeskError(Exception):
         return repr('%s: %s' % (self.error_code, self.msg))
 
 
+class ZendeskNoPageError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+
 class AuthenticationError(ZendeskError):
     def __init__(self, msg):
         self.msg = msg
@@ -241,3 +246,23 @@ class Zendesk(object):
             return json.loads(content)
         else:
             return responses[response_status]
+
+    def next_page(self, api_call, response):
+        """
+
+        :param response:
+        :return:
+        """
+        api_map = self.mapping_table[api_call]
+
+        if 'next_page' in response and response['next_page'] is None:
+            raise ZendeskNoPageError("There aren't any more pages")
+
+        # Make an http request (data replacements are finalized)
+        new_response, content = self.client.request(
+            response['next_page'],
+            api_map['method'],
+            headers=self.headers
+        )
+        # Use a response handler to determine success/fail
+        return self._response_handler(new_response, content, api_map['status'])
